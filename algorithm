@@ -1,0 +1,36 @@
+vector<string> letterCombinations(string digits) {//思想：把digits中第一个按钮中的元素放入容器中，从容器中的所有元素与下一个按钮中的元素依次结合，累积到digits结束！！
+	vector<string>numToString{ "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+	vector<string>res1;
+	vector<string>res2;
+	int cnt = digits.size();
+	for (int i = 0; i<cnt; i++)//处理digits中的那个按钮
+	{
+		int temp = digits[i] - '0';
+		
+	    int ac = 0;
+		if (temp == 7 || temp == 9) ac = 4;
+		else  ac = 3;//用来判断按钮是三个字母还是四个(7和9是有4个字母的)
+		for (int j = 0; j<numToString[temp - 2].size(); j++)//根据按钮从numToString里找到里面的字母
+		{
+			int length = res1.size();
+			string ctos = "";
+			if (length < ac) res1.push_back(ctos + numToString[temp - 2][j]);//当i为0的情况，即第一遍的情况，直接添加到容器中
+			else
+			{
+				for (int m = 0; m<length; m++)
+				{
+					res2.push_back(res1[m] + numToString[temp - 2][j]);//从容器中找到上一遍的string跟这一遍的结合，并放入res2。
+				}
+				
+			}
+
+		}
+		if (res2.size())
+		{
+			res1.assign(res2.begin(), res2.end());//再放入res1，其中res2是个中间容器
+			res2.clear();
+		}
+	}
+	return res1;
+
+}
